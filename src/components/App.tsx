@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { useGetBaseDataQuery } from "./api/api";
-import { baseStation, Comment } from "./interface";
+import { Comment } from "./interface";
 import BaseInfo from "./BaseInfo";
+import { Spin } from "antd";
 
 const App = () => {
   const { data, error, isLoading } = useGetBaseDataQuery();
@@ -26,12 +27,12 @@ const App = () => {
 
 
   if (isLoading) {
-    return <div>Загрузка...</div>;
+    return <div className="center"><Spin/></div>;
   }
 
   if (error) {
     const errorMessage = (error as any).message || "Произошла ошибка";
-    return <div>Error: {errorMessage}</div>;
+    return <div className="center red">Error: {errorMessage}</div>;
   }
 
   return (

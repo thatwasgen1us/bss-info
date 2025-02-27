@@ -1,6 +1,8 @@
 import { Spin } from "antd"
 import { useGetBaseInfoQuery } from "./api/api"
 import { useParams } from "react-router-dom"
+import HeaderBase from "./HeaderBase"
+import { WeekData } from "./interface"
 
 const BaseInfo = () => {
   const { name } = useParams()
@@ -13,14 +15,12 @@ const BaseInfo = () => {
     <main style={{ padding: "10px", flex: 1 }}>
       {data ? (
         <>
-          <h2>{name}</h2>
-          <div>
-            <p>Приоритет: {data.priority}</p>
-            <p>Кол-во аварий: {data.alarmCount}</p>
-            <p>Продолжительность аварий: {data.duration}</p>
-            <p>Дата запуска: {data.startDate}</p>
-          </div>
-
+        {name ? (
+          <HeaderBase name={name}/>
+        ) : (
+          <div className="center">Имя не указано</div>
+        )
+        }
           <table>
             <thead>
               <tr>
@@ -32,7 +32,7 @@ const BaseInfo = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.site_info.data?.map((week, index) => (
+              {data?.site_info.data?.map((week: WeekData, index: number) => (
                 <tr key={index}>
                   <td>{week.index}</td>
                   <td>{week.Change_of_battery}</td>

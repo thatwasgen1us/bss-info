@@ -23,3 +23,11 @@ export interface StationData {
 export interface DataResponse {
   data: StationData[];
 }
+
+export interface WeekData {
+  index: number; 
+  Change_of_battery: string;
+  Count_of_alarms: number;
+  Time_of_alarms: string;
+  CA_2G: number; 
+}
