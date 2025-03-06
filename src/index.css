@@ -341,3 +341,16 @@ tr:hover {
 .center-wrapper::-webkit-scrollbar {
   display: none;
 }
+
+.bs_info {
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.bs_info:hover {
+  background-color: #218838; 
+}
+
+.bs_info.active {
+  background-color: green;
+}

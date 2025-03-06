@@ -1,22 +1,24 @@
 import { Spin } from "antd";
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { useGetBaseInfoQuery } from "./api/api";
 import HeaderBase from "./HeaderBase";
 import { WeekData } from "./interface";
 
-const BaseInfo = () => {
-  const { name } = useParams();
+interface BaseInfoProps {
+  onBaseNameChange: (name: string) => void;
+}
+
+const BaseInfo: React.FC<BaseInfoProps> = ({ onBaseNameChange }) => {
+  const { name } = useParams<{ name: string }>();
   const { data, error, isLoading } = useGetBaseInfoQuery(name);
 
-  const [expandedOrders, setExpandedOrders] = useState<{ [key: string]: boolean }>({});
 
-  const toggleExpand = (weekIndex: number, orderIndex: number) => {
-    setExpandedOrders(prev => ({
-      ...prev,
-      [`${weekIndex}-${orderIndex}`]: !prev[`${weekIndex}-${orderIndex}`],
-    }));
-  };
+  React.useEffect(() => {
+    if (name) {
+      onBaseNameChange(name);
+    }
+  }, [name, onBaseNameChange]);
 
   if (isLoading) {
     return (

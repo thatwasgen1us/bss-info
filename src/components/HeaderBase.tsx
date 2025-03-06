@@ -12,7 +12,7 @@ const HeaderBase: React.FC<Props> = ({ name, dataObj }) => {
 
   return (
     <>
-      <h2>{name || 'NS1022'}</h2>
+      <h2>{name}</h2>
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
         <div>
           <p>Приоритет: {name}</p>

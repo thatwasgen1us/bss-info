@@ -80,7 +80,7 @@ const DataTable: React.FC<Props> = ({ dataObj = [] }) => {
           style={{
             color: 'black',
             position: 'fixed',
-            left: tooltip.x + 10, // Смещение от курсора
+            left: tooltip.x + 10, 
             top: tooltip.y + 10,
             backgroundColor: 'white',
             border: '1px solid black',

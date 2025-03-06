@@ -5,16 +5,22 @@ import { Link, Route, BrowserRouter as Router, Routes, useParams } from "react-r
 import { useGetBaseDataQuery } from "./api/api";
 import BaseInfo from "./BaseInfo";
 import { Comment } from "./interface";
-import { ThemeProvider, useTheme } from './ThemeContext'; // Импортируйте контекст
+import { ThemeProvider, useTheme } from './ThemeContext'; 
 
 const App = () => {
   const { data, error, isLoading } = useGetBaseDataQuery();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme(); 
+  const { name } = useParams()
 
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState<string>("");
   const [category, setCategory] = useState<string>("АКБ");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedBaseName, setSelectedBaseName] = useState<string | null>(null);
+
+  const handleBaseNameChange = (name: string) => {
+    setSelectedBaseName(name);
+  };
 
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,8 +30,10 @@ const App = () => {
     }
   };
 
-  const filteredStations = data?.data.filter(station =>
-    station.BS_NAME.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredStations = data?.data
+  .filter((station, index, self) =>
+    station.BS_NAME.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    index === self.findIndex((s) => s.BS_NAME === station.BS_NAME) 
   );
 
   if (isLoading) {
@@ -36,6 +44,8 @@ const App = () => {
     const errorMessage = (error as any).message || "Нет данных с сервера";
     return <div className="center red">Error: {errorMessage}</div>;
   }
+
+  console.log(name)
 
   return (
     <Router>
@@ -58,10 +68,10 @@ const App = () => {
               <div>W_year</div>
             </div>
             {filteredStations?.map((station) => (
-              <Link
+                <Link
                 to={`/base/${station.BS_NAME}`}
                 key={station.BS_NAME}
-                className="bs_info"
+                className={`bs_info ${station.BS_NAME.toLowerCase() === selectedBaseName?.toLowerCase() ? 'active' : ''}`}
               >
                 <div>{station.BS_NAME}</div>
                 <div>{station.CA_4w} %</div>
@@ -73,7 +83,7 @@ const App = () => {
         <div style={{ flex: 1, display: "flex", flexDirection: "column", alignSelf: 'start', height: '100vh', overflowY: 'scroll' }} className='center-wrapper'>
           <div style={{ flex: 1, padding: "10px" }}>
             <Routes>
-              <Route path="/base/:name" element={<BaseInfo />} />
+              <Route path="/base/:name" element={<BaseInfo onBaseNameChange={handleBaseNameChange} />} />
               <Route path="/" element={<h2>Выберите базовую станцию</h2>} />
             </Routes>
           </div>
