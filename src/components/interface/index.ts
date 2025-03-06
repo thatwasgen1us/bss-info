@@ -25,9 +25,17 @@ export interface DataResponse {
 }
 
 export interface WeekData {
-  index: number; 
-  Change_of_battery: string;
-  Count_of_alarms: number;
-  Time_of_alarms: string;
-  CA_2G: number; 
+  CA_2G: string | number;
+  change_of_battery: string;
+  combined_text: string | null;
+  count_of_alarms: string;
+  time_of_alarms: string;
+  weak: string;
+  weak_right: string | null;
+}
+
+
+export interface Order {
+  Weak: string,
+  combined_text: string
 }
